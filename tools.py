@@ -78,8 +78,38 @@ def search_listings(
     Test it from a terminal before you move on:
         python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
     """
-    # TODO: replace this with your implementation
-    return []
+    listings = load_listings()
+    results = listings
+
+    if max_price:
+        results = [l for l in results if l["price"] <= max_price]
+
+    if size:
+        kept = []
+        for listing in results:
+            # "S/M" -> ["s", "m"], "US 8.5" -> ["us", "8.5"]. Whole-token match
+            # only, so "s" can't match "us 9" and "l" can't match "xl".
+            tokens = (
+                listing["size"].lower()
+                .replace("/", " ").replace("(", " ").replace(")", " ")
+                .split()
+            )
+            if size.lower().strip() in tokens:
+                kept.append(listing)
+        results = kept
+
+    words = description.lower().split()
+    scored = []
+    for listing in results:
+        text_words = set(listing["description"].lower().split())
+        score = sum(1 for w in words if w in text_words)
+        if score > 0:
+            scored.append((score, listing))
+
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    results = [listing for score, listing in scored][:config.SEARCH_RESULT_LIMIT]
+
+    return results
 
 
 # ── Tool 2: suggest_outfit ────────────────────────────────────────────────────

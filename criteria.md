@@ -45,7 +45,8 @@ We don't want to waste resources on an impossible query. 5 out of 5 times we wan
 ---
 
 ## 3. Something about state
-The length of `session["selected_item"]` in `search_listings()` should be the same as `new_item` in `suggest_outfit()` 5 out of 5 times. 
+The listing `id` in  `session["selected_item"]` from `search_listings()` should be the same as `new_item` in `suggest_outfit()` 5 out of 5 times. 
+
 <!-- YOU WRITE THIS ONE.
 
      How would you know that the item your search found is the same item the

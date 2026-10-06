@@ -155,6 +155,9 @@ $ python app.py ask '...'
 $ python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
 
 ```
+``` python
+[{'id': 'lst_017', 'title': 'Mesh Long-Sleeve Top — Black', 'description': 'Sheer black mesh long-sleeve. Great for layering under a graphic tee or over a bralette. Stretchy material, fits true to size.', 'category': 'tops', 'style_tags': ['y2k', 'grunge', 'goth', 'layering'], 'size': 'S/M', 'condition': 'excellent', 'price': 15.0, 'colors': ['black'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_002', 'title': 'Y2K Baby Tee — Butterfly Print', 'description': 'Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.', 'category': 'tops', 'style_tags': ['y2k', 'vintage', 'graphic tee', 'cottagecore'], 'size': 'S/M', 'condition': 'excellent', 'price': 18.0, 'colors': ['white', 'pink', 'purple'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_006', 'title': 'Graphic Tee — 2003 Tour Bootleg Style', 'description': 'Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.', 'category': 'tops', 'style_tags': ['graphic tee', 'vintage', 'grunge', 'streetwear', 'band tee'], 'size': 'L', 'condition': 'good', 'price': 24.0, 'colors': ['black'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_015', 'title': 'Vintage Graphic Hoodie — Faded Black', 'description': 'Faded black pullover hoodie with barely-visible vintage graphic on the chest. Cozy interior. Some pilling but adds to the worn-in look.', 'category': 'tops', 'style_tags': ['vintage', 'grunge', 'graphic', 'streetwear'], 'size': 'L', 'condition': 'fair', 'price': 26.0, 'colors': ['black', 'charcoal'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_033', 'title': 'Vintage Band Tee — Faded Grey', 'description': 'Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.', 'category': 'tops', 'style_tags': ['vintage', 'grunge', 'band tee', 'graphic tee', 'streetwear'], 'size': 'L', 'condition': 'fair', 'price': 19.0, 'colors': ['grey', 'charcoal'], 'brand': None, 'platform': 'depop'}]
+```
 
 ```
 $ python -c "from tools import suggest_outfit; ..."
@@ -179,15 +182,24 @@ $ python -c "from tools import create_fit_card; ..."
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Break down a simple logic for parsing of the size attribute. 
+- *What came back:* A suggestion for a helper function with tokens for expected sizes. A mapping to categorize size small and medium as well as identify shoe sizes. 
+- *What I changed:* Keep the logic within the `search_listings` function. Even though it's messier, I just want to have all the information in one place during the simple first pass. 
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
+- *What I asked for:* Draft a way to score listings by keyword overlap. Drop the scores of 0. 
+- *What came back:* 
+  - 1. Suggestion to lowercase all the text and split on spaces. 
+  - 2. Then, create a set of the words parsed. 
+  - 3. Create a score variable which represents how many query words appear in that set. 
+  - 4. Store the results `(score, listing)'` in a new list called scored.
+  - 5. Only append to `scored` when `score > 0`
+  - 6. Sort `scored` by highest score first.
+  - 7. Only keep 10 highest scores.
+  - 8. If nothing is scored, return an empty list `[]`.  
 - *What I changed:*
+  - Steps 1-8 above.
 
 <!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
 
