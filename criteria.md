@@ -25,6 +25,7 @@ Given a query that matches at least one listing, the agent completes all three
 tool calls and returns a fit card — in at least 4 of 5 tries.
 
 **Why this target:**
+I picked 4 of 5 because my search is a plain keyword match and some phrasings will miss.
 <!-- Why 4 of 5 and not 5 of 5? Something about your search, probably —
      "my search is a plain keyword match and some phrasings will miss" is a
      real answer. -->
@@ -37,13 +38,14 @@ Given a query that matches no listings, the agent stops before calling
 `suggest_outfit` and returns a message naming what to change — 5 of 5 tries.
 
 **Why this target:**
+We don't want to waste resources on an impossible query. 5 out of 5 times we want to make sure that the correct logic flow is followed, since this is not deterministic.  
 <!-- Why is 5 of 5 reasonable here when criterion 1 isn't? What's different
      about this path? -->
 
 ---
 
 ## 3. Something about state
-
+The length of `session["selected_item"]` in `search_listings()` should be the same as `new_item` in `suggest_outfit()` 5 out of 5 times. 
 <!-- YOU WRITE THIS ONE.
 
      How would you know that the item your search found is the same item the
@@ -57,13 +59,13 @@ Given a query that matches no listings, the agent stops before calling
 
 
 **Why this target:**
-
+We want to make sure that the arguments passed from `search_listings` to `suggest_outfit` are the same. This shows that the system logic flow is working correctly and the same inputs are being passed from tool step 1 to step 2. 
 
 
 ---
 
-## 4. Something about the fit card
-
+## 4. The fit card should be concise.
+3 out of 5 tries should return a caption that is 500 characters or less. 
 <!-- YOU WRITE THIS ONE.
 
      The fit card calls a model, so the same input can produce different words
@@ -79,11 +81,13 @@ Given a query that matches no listings, the agent stops before calling
 
 **Why this target:**
 
-
+According to social media character limits in 2026 (https://thetextgenerators.com/social-media-character-limits/), a Pinterest post caption is 500 characters. I think that's a reasonable length for most posts on a site that is popularly used to post outfit inpsiration. In general, the caption should be shorter and concise but if the length is 550 characters, that's not detrimental to the operational logic of the system. 
 
 ---
 
-## 5. Your choice
+## 5. Style suggestions price range reasonable
+
+3 out of 5 suggestions should respect the price ceiling.
 
 <!-- YOU WRITE THIS ONE TOO.
 
@@ -96,7 +100,7 @@ Given a query that matches no listings, the agent stops before calling
 
 **Why this target:**
 
-
+Budget is an important constraint as a consumer. I think it's important to consider that as part of the system. But it may harder to respect in real-life to stay under a consumer's unrealistic expectations for price or $10 over budget is not that big of a deal if the user is getting a better personalization suggestion. So 3 out of 5 seems like a good baseline for a first iteration. 
 
 ---
 
