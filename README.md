@@ -60,24 +60,43 @@
 ### `search_listings`
 
 - **What it does:**
+  - searches the listings file and returns matches
 - **Inputs:** <!-- name and type each: `max_price` (float), not "a price" -->
+  - description (string)
+  - size (string)
+  - max_price (float or None to skip price filtering)
 - **Returns:**
+  - a list of matching list dicts, each id, title, description, category, style_tags (list), size,
+        condition, price (float), colors (list), brand (str or None), platform
+  - sorted by the best match first.
+  
 - **When it has nothing:**
+  - returns an empty list when nothing matches
 
 ### `suggest_outfit`
 
 - **What it does:**
+  - takes an item and a wardrobe, returns outfit ideas
 - **Inputs:**
+  - new_item (a listing dictionary)
+  - wardrobe (a wardrobe dictionary)
 - **Returns:**
+  - outfit_ideas (non-empty string)
 - **When it has nothing:**
+  - print general styling advice
 
 ### `create_fit_card`
 
 - **What it does:**
+  - writes a short caption someone would post on social media about the style
 - **Inputs:**
+  - outfit (string)
+  - new_item (listing dictionary)
 - **Returns:**
+  - caption (string)
 - **When it has nothing:**
-
+  - Print a message describing the style
+  
 ---
 
 ## Planning Loop
@@ -94,12 +113,25 @@
      function have to be real. -->
 
 **Branch rule:**
+If `search_listings` returns an empty list, put a message in the session and stop. Otherwise, take the first result and go to `suggest_outfit`.  
 
 **Where it lives:** `agent.py::run_agent`
 
 **How the query is parsed:** <!-- regex, string splitting, or asking the model — say which -->
 
+1. Parse the query by using regex to find text containing a $ sign to signify price. Use regext to parse for "size" and the phrase that comes afterward, such as "size M" or "size 10."
+2. Assign the results of `search_listings()` to `session["search_results"]`.
+3. If the length of `session["search_results]` is 0, this will signal the logic to branch off.
+
 **What moves through the session:** <!-- which fields, in what order -->
+
+1. Parse the query using regex to find price and size attributes.
+2. Consider the remaining string text as part of the style wardrobe description query.  
+3. Call `search_listings()` with the results of the string parsing.
+4. Assign the results to `session["search_results]`
+5. If nothing comes back, assign an error message to `session["error"]`, saying "No results." Do not call `session_outfit`.
+6. Otherwise, call `suggest_outfit` with the selected item and wardrobe.
+7. Assign the result to `session["outfit_suggestion"]`
 
 ---
 
