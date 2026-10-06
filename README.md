@@ -151,22 +151,86 @@ $ python app.py ask '...'
 
 **The three tools, tested one at a time**
 
-```
-$ python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
+### 1. `search_listings()`
 
+``` bash
+$ python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
 ```
-``` python
+
+``` javascript
 [{'id': 'lst_017', 'title': 'Mesh Long-Sleeve Top — Black', 'description': 'Sheer black mesh long-sleeve. Great for layering under a graphic tee or over a bralette. Stretchy material, fits true to size.', 'category': 'tops', 'style_tags': ['y2k', 'grunge', 'goth', 'layering'], 'size': 'S/M', 'condition': 'excellent', 'price': 15.0, 'colors': ['black'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_002', 'title': 'Y2K Baby Tee — Butterfly Print', 'description': 'Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.', 'category': 'tops', 'style_tags': ['y2k', 'vintage', 'graphic tee', 'cottagecore'], 'size': 'S/M', 'condition': 'excellent', 'price': 18.0, 'colors': ['white', 'pink', 'purple'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_006', 'title': 'Graphic Tee — 2003 Tour Bootleg Style', 'description': 'Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.', 'category': 'tops', 'style_tags': ['graphic tee', 'vintage', 'grunge', 'streetwear', 'band tee'], 'size': 'L', 'condition': 'good', 'price': 24.0, 'colors': ['black'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_015', 'title': 'Vintage Graphic Hoodie — Faded Black', 'description': 'Faded black pullover hoodie with barely-visible vintage graphic on the chest. Cozy interior. Some pilling but adds to the worn-in look.', 'category': 'tops', 'style_tags': ['vintage', 'grunge', 'graphic', 'streetwear'], 'size': 'L', 'condition': 'fair', 'price': 26.0, 'colors': ['black', 'charcoal'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_033', 'title': 'Vintage Band Tee — Faded Grey', 'description': 'Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.', 'category': 'tops', 'style_tags': ['vintage', 'grunge', 'band tee', 'graphic tee', 'streetwear'], 'size': 'L', 'condition': 'fair', 'price': 19.0, 'colors': ['grey', 'charcoal'], 'brand': None, 'platform': 'depop'}]
 ```
-
+## 2. `suggest_outfit()`
+### a. Existing wardrobe
+``` bash
+$ python -c "from tools import suggest_outfit; from utils.data_loader import get_example_wardrobe, load_listings; print(suggest_outfit(load_listings()[0], get_example_wardrobe()))"
 ```
-$ python -c "from tools import suggest_outfit; ..."
 
+``` markdown
+Here are three outfit combinations you can wear with your new vintage Levi's 501 jeans (`lst_001`), pulling pieces straight from your wardrobe:
+
+### Outfit 1: Effortless Everyday Casual
+*Vibe: Clean, minimal, classic 90s streetwear.*
+
+* **Top:** White ribbed tank top (`w_003`) — tucked into the jeans for a fitted silhouette.
+* **Accessories:** Brown leather belt (`w_009`) to accent the waist and tie in the vintage tones.
+* **Outerwear:** Vintage black denim jacket (`w_006`) layered on top for a denim-on-denim/textured look.
+* **Shoes:** Chunky white sneakers (`w_007`).
+* **Bag:** Black crossbody bag (`w_010`).
+
+---
+
+### Outfit 2: Cozy & Relaxed Streetwear
+*Vibe: Comfy, oversized proportions, effortless layering.*
+
+* **Top:** White ribbed tank top (`w_003`) as a base layer.
+* **Outerwear/Layer:** Oversized grey crewneck sweatshirt (`w_004`) worn loosely over the tank and jeans.
+* **Shoes:** Chunky white sneakers (`w_007`).
+* **Bag:** Black crossbody bag (`w_010`).
+
+---
+
+### Outfit 3: Edgy Contrast
+*Vibe: Grunge-leaning, structured, cool-toned.*
+
+* **Top:** Black cropped zip hoodie (`w_005`) — the crop hits right above the mid-rise/high-rise of the 501s.
+* **Shoes:** Black combat boots (`w_008`) for a tougher, grounded silhouette.
+* **Accessories:** Brown leather belt (`w_009`) to break up the black and blue.
+* **Bag:** Black crossbody bag (`w_010`).
 ```
 
+### b. Empty wardrobe returns generic styling advice. 
+``` bash
+python -c "from tools import suggest_outfit; from utils.data_loader import get_empty_wardrobe, load_listings; print(suggest_outfit(load_listings()[0], get_empty_wardrobe()))"
 ```
+
+``` markdown
+
+Here is some general styling advice for your **Vintage Levi’s 501 Jeans (Medium Wash)**, broken down by aesthetic and occasion:
+
+### 1. Casual Streetwear (Embracing the Vibe)
+Since these already have that effortless vintage look and street style tag, lean into relaxed, skater-inspired silhouettes:
+*   **Tops:** A slightly oversized graphic tee, a vintage band t-shirt, or a heavyweight hoodie (gray, black, or oatmeal). 
+*   **Footwear:** Retro sneakers like Nike Dunks, Adidas Sambas, or classic Converse All-Stars.
+*   **Accessories:** A canvas tote bag, a silver chain necklace, and a baseball cap.
+
+### 2. Smart-Casual / "Model Off-Duty"
+Medium-wash 501s are fantastic for dressing up slightly while keeping that effortless feel:
+*   **Tops:** A crisp white button-down shirt (tucked in or worn open over a ribbed tank top) or a classic black turtleneck.
+*   **Outerwear:** A structured blazer (oversized and charcoal or plaid looks great with denim) or a black leather biker jacket.
+*   **Footwear:** Retro leather loafers, ankle boots, or classic black flats.
+*   **Accessories:** A minimalist leather belt and a structured shoulder bag.
+
+### 3. Season-by-Season Tweaks
+*   **Fall/Winter:** Layer with a chunky knit cardigan or a trench coat. Throw on a ribbed beanie.
+*   **Spring/Summer:** Pair with a simple white ribbed tank top or a cropped baby tee. Roll the cuffs slightly and wear with leather sandals or canvas sneakers.
+
+### 💡 Styling Tip for 501s:
+Because vintage 501s are made of 100% rigid cotton with little to no stretch, they look best when balanced with either a fitted top (to highlight the high waist) or a *deliberately* oversized top (for that relaxed, 90s aesthetic). A French tuck (tucking in just the front) works wonders for defining the waist!
+```
+### 3. `create_fit_card()`
+``` bash
 $ python -c "from tools import create_fit_card; ..."
-
 ```
 
 ---
@@ -198,8 +262,11 @@ $ python -c "from tools import create_fit_card; ..."
   - 6. Sort `scored` by highest score first.
   - 7. Only keep 10 highest scores.
   - 8. If nothing is scored, return an empty list `[]`.  
+  - 9. Suggestions to implement punctuation parsing. For example "t-shirt" and "tee shirt" would not be evaluated as similar words. 
 - *What I changed:*
   - Steps 1-8 above.
+  - Ignored additional suggestion for punctation parsing.
+  - Keep it simple on first pass implementation.
 
 <!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
 

@@ -22,7 +22,7 @@ the description has to say what is *in* the list.
 
 import config  # noqa: F401 — you'll use this in search_listings
 from generate import generate
-from utils.data_loader import load_listings
+from utils.data_loader import load_listings, get_example_wardrobe
 
 
 # ── Tool 1: search_listings ───────────────────────────────────────────────────
@@ -142,8 +142,23 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
     Test it from a terminal before you move on:
         python -c "from tools import suggest_outfit; from utils.data_loader import get_example_wardrobe, load_listings; print(suggest_outfit(load_listings()[0], get_example_wardrobe()))"
     """
-    # TODO: replace this with your implementation
-    return ""
+
+    if not wardrobe['items']:
+        # generate styling advice for the specific item.
+        return generate(f"This is my wardrobe item information: {new_item}. \nProvide general styling advice for this item.")
+    else:
+        # new item prompt
+        new_item_prompt = f"This is my new item: {new_item}.\n"
+
+        # format wardrobe items into prompt. 
+        wardrobe_prompt = f"These are items in my wardrobe: {wardrobe}.\n"
+
+        # ask for specific combination pieces the user already owns
+        outfit_prompt = "Suggest outfit combinations from my wardrobe." 
+    
+        # return model response
+        prompt = new_item_prompt + wardrobe_prompt + outfit_prompt
+        return generate(prompt)
 
 
 # ── Tool 3: create_fit_card ───────────────────────────────────────────────────
