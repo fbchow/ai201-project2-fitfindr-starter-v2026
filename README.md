@@ -16,24 +16,10 @@
 > All three tools are stubs, so that last command will do nothing useful yet.
 > That's the starting position.
 >
-> **The rest of this file is your submission.** Fill it in as you go.
 
 ---
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-     HOW TO USE THIS FILE
 
-     This is your submission. Fill each section in as you finish the milestone
-     it belongs to — don't leave it all to the end.
-
-     Unit 3 asks for the first five sections. Unit 4 adds the five below them.
-     Leave the unit 4 sections alone until then; they're here so you know
-     what's coming.
-
-     Everything is pasted as TEXT. No screenshots, no images, no video links.
-     A typed block of output gets full credit; a picture of the same output
-     gets none.
-     ───────────────────────────────────────────────────────────────────────── -->
 
 <!-- ═══════════════════════ UNIT 3 — THE BUILD ═══════════════════════ -->
 
@@ -41,7 +27,7 @@
 
 <!-- Three or four sentences: what a user asks for, and what they get back. -->
 
-
+ FitFindr is an agent that helps you put together outfits and provide styling outfits based on a new item that you find. Someone says what they want — "a vintage graphic tee under $30, size M" — and the agent searches listings, works out what it would go with, and writes a caption for it.
 
 ---
 
@@ -144,9 +130,44 @@ If `search_listings` returns an empty list, put a message in the session and sto
 
 **One full query**
 
+``` bash
+$ python app.py ask 'vintage graphic tee under $30'
 ```
-$ python app.py ask '...'
 
+``` markdown
+Lean into the hoodie's relaxed, worn-in aesthetic with a classic skater/grunge silhouette.
+
+*   **Top:** Vintage Graphic Hoodie (`lst_015`) — *Faded Black*
+*   **Bottoms:** Baggy straight-leg jeans, dark wash (`w_001`) — *Dark Blue/Indigo*
+*   **Shoes:** Black combat boots (`w_008`) — *Black*
+*   **Accessories:** Black crossbody bag (`w_010`) — *Black*
+
+**Why it works:** The oversized, faded look of the hoodie pairs naturally with the low-slung, baggy silhouette of the dark wash denim. Finishing the look with combat boots leans hard into the grunge and streetwear style tags of both the hoodie and the boots.
+
+---
+
+### Outfit 2: Casual Contrast & Comfort
+Play with proportions by pairing the cozy, oversized hoodie with lighter footwear and accessories for a balanced everyday look.
+
+*   **Top:** Vintage Graphic Hoodie (`lst_015`) — *Faded Black*
+*   **Bottoms:** Wide-leg khaki trousers (`w_002`) — *Khaki/Tan*
+*   **Shoes:** Chunky white sneakers (`w_007`) — *White*
+*   **Accessories:** Black crossbody bag (`w_010`) — *Black*
+
+**Why it works:** Pairing the faded black hoodie with khaki trousers creates a nice contrast between dark tones and warm earth tones. The chunky white sneakers tie the streetwear vibe together while adding a fresh, casual pop to the lower half of theoutfit.
+
+  Fit card: Here are a few options, depending on your vibe:
+
+**Option 1 (Edgy & Streetwear)**
+> One hoodie, two totally different moods. 🖤 Which one are you rocking today: full grunge with the combat boots, or keeping it clean with the khakis and chunky sneakers? Let me know below! 👇 #StreetwearStyle #OutfitInspo #StylingTips
+
+**Option 2 (Short & Punchy)**
+> Proof that your favorite vintage hoodie goes with literally everything. 🤌✨ Grunge or casual comfort? 
+
+**Option 3 (Interactive)**
+> Outfit 1 or Outfit 2? Styling this faded black graphic hoodie two ways. 🛹👟 #OOTD #StyleInspo #WardrobeStaples
+
+2 model calls this session, 1111 prompt + 530 output tokens
 ```
 
 **The three tools, tested one at a time**

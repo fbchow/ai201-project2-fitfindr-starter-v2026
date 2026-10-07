@@ -13,6 +13,8 @@ Build and test your three tools in `tools.py` first. Then come here.
     python agent.py          runs both example paths below
 """
 
+import re
+
 import config
 import trace
 from tools import search_listings, suggest_outfit, create_fit_card
@@ -106,10 +108,52 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         than a stack trace. The import is already at the top of this file.
     """
     session = new_session(query, wardrobe)
+    count = 0
 
-    # TODO: delete these two lines and build the loop.
-    session["error"] = "The planning loop isn't built yet — see the TODO in agent.py."
-    return session
+    while True:
+        count += 1
+        trace.check_iterations(count)
+
+        # Parse with regex: size and max price, the rest is the description.
+        size_match = re.search(r"\bsize\s+(\w+)", query, re.I)
+        price_match = re.search(r"(?:under|below|<)\s*\$?(\d+(?:\.\d+)?)", query, re.I)
+        size = size_match.group(1).upper() if size_match else None
+        max_price = float(price_match.group(1)) if price_match else None
+
+        description = query
+        for m in (size_match, price_match):
+            if m:
+                description = description.replace(m.group(0), "")
+        description = re.sub(r"\s*,\s*", " ", description).strip()
+
+        session["parsed"] = {
+            "description": description,
+            "size": size,
+            "max_price": max_price,
+        }
+
+        session["search_results"] = search_listings(**session["parsed"])
+
+        # The branch: nothing found, so stop before suggest_outfit.
+        if not session["search_results"]:
+            p = session["parsed"]
+            session["error"] = (
+                f"Nothing matched '{p['description']}'"
+                + (f" in size {p['size']}" if p["size"] else "")
+                + (f" under ${p['max_price']:g}" if p["max_price"] is not None else "")
+                + ". Try raising your budget, dropping the size, "
+                "or using a broader description."
+            )
+            return session
+
+        session["selected_item"] = session["search_results"][0]
+        session["outfit_suggestion"] = suggest_outfit(
+            session["selected_item"], session["wardrobe"]
+        )
+        session["fit_card"] = create_fit_card(
+            session["outfit_suggestion"], session["selected_item"]
+        )
+        return session
 
 
 # ── running it directly ───────────────────────────────────────────────────────
@@ -124,6 +168,9 @@ def _show(session: dict) -> None:
     print(f"  found:    {item.get('title')} — ${item.get('price')} on {item.get('platform')}")
     print(f"  outfit:   {session['outfit_suggestion']}")
     print(f"  fit card: {session['fit_card']}")
+    print("  session:")
+    for key, value in session.items():
+        print(f"    {key}: {value!r}")
 
 
 if __name__ == "__main__":
