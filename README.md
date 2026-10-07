@@ -160,8 +160,8 @@ $ python -c "from tools import search_listings; print(search_listings('graphic t
 ``` javascript
 [{'id': 'lst_017', 'title': 'Mesh Long-Sleeve Top — Black', 'description': 'Sheer black mesh long-sleeve. Great for layering under a graphic tee or over a bralette. Stretchy material, fits true to size.', 'category': 'tops', 'style_tags': ['y2k', 'grunge', 'goth', 'layering'], 'size': 'S/M', 'condition': 'excellent', 'price': 15.0, 'colors': ['black'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_002', 'title': 'Y2K Baby Tee — Butterfly Print', 'description': 'Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.', 'category': 'tops', 'style_tags': ['y2k', 'vintage', 'graphic tee', 'cottagecore'], 'size': 'S/M', 'condition': 'excellent', 'price': 18.0, 'colors': ['white', 'pink', 'purple'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_006', 'title': 'Graphic Tee — 2003 Tour Bootleg Style', 'description': 'Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.', 'category': 'tops', 'style_tags': ['graphic tee', 'vintage', 'grunge', 'streetwear', 'band tee'], 'size': 'L', 'condition': 'good', 'price': 24.0, 'colors': ['black'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_015', 'title': 'Vintage Graphic Hoodie — Faded Black', 'description': 'Faded black pullover hoodie with barely-visible vintage graphic on the chest. Cozy interior. Some pilling but adds to the worn-in look.', 'category': 'tops', 'style_tags': ['vintage', 'grunge', 'graphic', 'streetwear'], 'size': 'L', 'condition': 'fair', 'price': 26.0, 'colors': ['black', 'charcoal'], 'brand': None, 'platform': 'depop'}, {'id': 'lst_033', 'title': 'Vintage Band Tee — Faded Grey', 'description': 'Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.', 'category': 'tops', 'style_tags': ['vintage', 'grunge', 'band tee', 'graphic tee', 'streetwear'], 'size': 'L', 'condition': 'fair', 'price': 19.0, 'colors': ['grey', 'charcoal'], 'brand': None, 'platform': 'depop'}]
 ```
-## 2. `suggest_outfit()`
-### a. Existing wardrobe
+### 2. `suggest_outfit()`
+#### a. Existing wardrobe
 ``` bash
 $ python -c "from tools import suggest_outfit; from utils.data_loader import get_example_wardrobe, load_listings; print(suggest_outfit(load_listings()[0], get_example_wardrobe()))"
 ```
@@ -199,7 +199,7 @@ Here are three outfit combinations you can wear with your new vintage Levi's 501
 * **Bag:** Black crossbody bag (`w_010`).
 ```
 
-### b. Empty wardrobe returns generic styling advice. 
+#### b. Empty wardrobe returns generic styling advice. 
 ``` bash
 python -c "from tools import suggest_outfit; from utils.data_loader import get_empty_wardrobe, load_listings; print(suggest_outfit(load_listings()[0], get_empty_wardrobe()))"
 ```
@@ -228,9 +228,64 @@ Medium-wash 501s are fantastic for dressing up slightly while keeping that effor
 ### 💡 Styling Tip for 501s:
 Because vintage 501s are made of 100% rigid cotton with little to no stretch, they look best when balanced with either a fitted top (to highlight the high waist) or a *deliberately* oversized top (for that relaxed, 90s aesthetic). A French tuck (tucking in just the front) works wonders for defining the waist!
 ```
+
 ### 3. `create_fit_card()`
+
+#### a. with outfit suggestion
 ``` bash
-$ python -c "from tools import create_fit_card; ..."
+$ python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('jeans and white sneakers', load_listings()[0]))"
+```
+
+``` markdown
+**Option 1 (Casual & Classic):**
+You can never go wrong with a classic. 👖👟✨
+
+**Option 2 (Effortless):**
+Put together in 5 minutes, looks good all day. 
+
+**Option 3 (Short & Sweet):**
+Jeans, white kicks, and good vibes. ☀️
+
+**Option 4 (Confident):**
+My kind of uniform.
+```
+
+#### b. no outfit suggestion
+``` bash
+$ python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('', load_listings()[0]))"
+```
+``` markdown
+Outfit suggestions is missing. Here's a description about the new item instead: 
+Nothing beats a classic. ✨ Authentic vintage Levi’s 501s in the dreamiest medium wash with that perfectly worn-in knee fade. 
+
+📏 Size: W30 L30
+🏷️ Brand: Levi’s
+💸 Price: $38
+```
+
+### c. different styling, same listing
+
+``` bash
+$ python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('little black dress', load_listings()[0])"
+```
+
+``` markdown
+Here are a few options, depending on the vibe you’re going for:
+
+**Chic & Timeless:**
+> You can never go wrong. ✨🖤 #LBD #TimelessStyle
+
+**Sassy & Confident:**
+> Mentally unstable, but my little black dress is doing the heavy lifting. 🥂🖤 
+
+**Short & Sweet:**
+> Always in style. 🖤
+
+**Edgy:**
+> Less talk, more little black dress. ⚡️🖤
+
+**Dinner/Night Out:**
+> Problem solver. (The problem is what to wear). 🍸✨
 ```
 
 ---

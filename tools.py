@@ -197,5 +197,17 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     Test it from a terminal before you move on:
         python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('jeans and white sneakers', load_listings()[0]))"
     """
-    # TODO: replace this with your implementation
-    return ""
+    # guard against an empty or whitespace only outfit
+    if not outfit or outfit == "" or outfit == " ":
+        description_prompt = f"Write a short caption for social media using this outfit listing: \n {new_item}."
+        message = f"Outfit suggestions is missing. Here's a description about the new item instead: \n\n"
+        description = generate(description_prompt)
+        results = message + description
+        return results
+
+    # build a prompt with item details and the outfit
+    else:
+        prompt = f"Write a short caption someone would post on social media about this style:\n {outfit}."
+        
+        # call generate() and return response
+        return generate(prompt)
