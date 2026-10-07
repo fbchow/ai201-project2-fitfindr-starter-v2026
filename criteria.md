@@ -38,7 +38,7 @@ Given a query that matches no listings, the agent stops before calling
 `suggest_outfit` and returns a message naming what to change — 5 of 5 tries.
 
 **Why this target:**
-We don't want to waste resources on an impossible query. 5 out of 5 times we want to make sure that the correct logic flow is followed, since this is not deterministic.  
+The stop is decided by if not session["search_results"] in agent.py, after `search_listings()`, which is plain Python with no model call. The same query against the same 40 listings gives the same empty list every time, so there's no reason to tolerate a miss, unlike criterion 1 where the model is in play. A miss here would mean the branch is wrong, not that the model was unlucky. The query "designer ballgown size XXS under $5" is also below the cheapest listing ($12).
 <!-- Why is 5 of 5 reasonable here when criterion 1 isn't? What's different
      about this path? -->
 
@@ -81,27 +81,28 @@ We want to make sure that the arguments passed from `search_listings` to `sugges
 
 
 **Why this target:**
-
-According to social media character limits in 2026 (https://thetextgenerators.com/social-media-character-limits/), a Pinterest post caption is 500 characters. I think that's a reasonable length for most posts on a site that is popularly used to post outfit inpsiration. In general, the caption should be shorter and concise but if the length is 550 characters, that's not detrimental to the operational logic of the system. 
+I picked 3 of 5 because without a length instruction in the prompt I expect some overruns. `create_fit_card` calls the model at `TEMPERATURE = 0.9` and its prompt (`tools.py`) sets no length limit, so length varies run to run. The spec asks for a 2–4 sentence caption, which fits well under 500 characters. According to social media character limits in 2026 (https://thetextgenerators.com/social-media-character-limits/), a Pinterest post caption is 500 characters. I think that's a reasonable length for most posts on a site that is popularly used to post outfit inpsiration.
 
 ---
 
-## 5. Style suggestions price range reasonable
+## 5. The empty wardrobe still gets an outfit and a fit card
 
-3 out of 5 suggestions should respect the price ceiling.
-
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. Speed, the empty
-     wardrobe path, what happens when the model can't be reached, whether the
-     search respects a price ceiling — anything, as long as it names a number
-     or an observable outcome. -->
-
-
+With an empty wardrobe (`get_empty_wardrobe()`) and a query that matches at
+least one listing, the agent returns a non-empty `outfit_suggestion` and a
+non-empty `fit_card`, with `session["error"]` still None, in at least 4 of 5
+tries.
 
 **Why this target:**
-
-Budget is an important constraint as a consumer. I think it's important to consider that as part of the system. But it may harder to respect in real-life to stay under a consumer's unrealistic expectations for price or $10 over budget is not that big of a deal if the user is getting a better personalization suggestion. So 3 out of 5 seems like a good baseline for a first iteration. 
+`suggest_outfit` has a separate branch for `wardrobe['items']` being empty
+(tools.py), with its own prompt that asks for general styling advice instead of
+combinations from owned pieces. That path is easy to forget, and the loop in
+agent.py passes the empty wardrobe straight through with no check of its own,
+so if the branch returned "" the fit card would be built on nothing.
+I picked 4 of 5 and not 5 of 5 because both calls are model calls
+(TEMPERATURE = 0.9), so a rate-limit or model-unavailable failure can still
+produce an empty string. I picked 4 of 5 and not 3 of 5 because the search and
+branch logic before the model is deterministic, so a miss should be rare and
+mean a real bug.
 
 ---
 
