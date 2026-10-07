@@ -21,8 +21,7 @@ data earns credit; *"80% seemed reasonable"* does not.
 
 ## 1. A matching query completes all three tools
 
-Given a query that matches at least one listing, the agent completes all three
-tool calls and returns a fit card — in at least 4 of 5 tries.
+Given a query that matches at least one listing, the agent completes all three tool calls and returns a fit card — in at least 4 of 5 tries.
 
 **Why this target:**
 I picked 4 of 5 because my search is a plain keyword match and some phrasings will miss.
@@ -34,8 +33,7 @@ I picked 4 of 5 because my search is a plain keyword match and some phrasings wi
 
 ## 2. An impossible query stops before the second tool
 
-Given a query that matches no listings, the agent stops before calling
-`suggest_outfit` and returns a message naming what to change — 5 of 5 tries.
+Given a query that matches no listings, the agent stops before calling `suggest_outfit`. — 5 of 5 tries.
 
 **Why this target:**
 The stop is decided by if not session["search_results"] in agent.py, after `search_listings()`, which is plain Python with no model call. The same query against the same 40 listings gives the same empty list every time, so there's no reason to tolerate a miss, unlike criterion 1 where the model is in play. A miss here would mean the branch is wrong, not that the model was unlucky. The query "designer ballgown size XXS under $5" is also below the cheapest listing ($12).
@@ -44,8 +42,9 @@ The stop is decided by if not session["search_results"] in agent.py, after `sear
 
 ---
 
-## 3. Something about state
-The listing `id` in  `session["selected_item"]` from `search_listings()` should be the same as `new_item` in `suggest_outfit()` 5 out of 5 times. 
+## 3. The selected item is the one the outfit step receives
+
+The item the search picks is the same item the outfit step styles. Tested by comparing the listing `id` in `session["selected_item"]` (chosen from `search_listings()`) with the `id` of the `new_item` that reaches `suggest_outfit()`: they match in 5 out of 5 tries.
 
 <!-- YOU WRITE THIS ONE.
 
@@ -65,8 +64,10 @@ We want to make sure that the arguments passed from `search_listings` to `sugges
 
 ---
 
-## 4. The fit card should be concise.
-3 out of 5 tries should return a caption that is 500 characters or less. 
+## 4. The fit card caption should be concise.
+
+3 out of 5 tries should return a caption that is 500 characters or less.
+
 <!-- YOU WRITE THIS ONE.
 
      The fit card calls a model, so the same input can produce different words
@@ -87,10 +88,11 @@ I picked 3 of 5 because without a length instruction in the prompt I expect some
 
 ## 5. The empty wardrobe still gets an outfit and a fit card
 
-With an empty wardrobe (`get_empty_wardrobe()`) and a query that matches at
-least one listing, the agent returns a non-empty `outfit_suggestion` and a
-non-empty `fit_card`, with `session["error"]` still None, in at least 4 of 5
-tries.
+A user with no saved clothes can still search for an item and get back outfit
+advice and a fit card, without the agent stopping on an error. Tested with an
+empty wardrobe (`get_empty_wardrobe()`) and a query that matches a listing:
+`outfit_suggestion` and `fit_card` are both filled in and `session["error"]`
+is None, in at least 4 of 5 tries.
 
 **Why this target:**
 `suggest_outfit` has a separate branch for `wardrobe['items']` being empty
