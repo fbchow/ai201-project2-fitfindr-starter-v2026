@@ -19,6 +19,7 @@ import config
 import trace
 from tools import search_listings, suggest_outfit, create_fit_card
 from generate import ModelUnavailable
+from mcp_client import call_tool
 
 
 # ── session state ─────────────────────────────────────────────────────────────
@@ -112,7 +113,7 @@ def run_agent(query: str, wardrobe: dict) -> dict:
 
     while True:
         count += 1
-        trace.check_iterations(count)
+        # trace.check_iterations(count)
 
         # Parse with regex: size and max price, the rest is the description.
         size_match = re.search(r"\bsize\s+(\w+)", query, re.I)
@@ -132,7 +133,14 @@ def run_agent(query: str, wardrobe: dict) -> dict:
             "max_price": max_price,
         }
 
-        session["search_results"] = search_listings(**session["parsed"])
+        # count += 1
+        # trace.check_iterations(count)
+        # session["search_results"] = search_listings(**session["parsed"])
+        session["search_results"] = call_tool("search_listings", {
+        "description": description,
+        "size": size,
+        "max_price": max_price,
+    })
 
         # The branch: nothing found, so stop before suggest_outfit.
         if not session["search_results"]:
@@ -145,11 +153,18 @@ def run_agent(query: str, wardrobe: dict) -> dict:
                 "or using a broader description."
             )
             return session
-
+        # count += 1
+        # trace.check_iterations(count)
         session["selected_item"] = session["search_results"][0]
+
+        # count += 1
+        # trace.check_iterations(count)
         session["outfit_suggestion"] = suggest_outfit(
             session["selected_item"], session["wardrobe"]
         )
+
+        # count += 1
+        # trace.check_iterations(count)
         session["fit_card"] = create_fit_card(
             session["outfit_suggestion"], session["selected_item"]
         )

@@ -66,26 +66,31 @@ from tools import search_listings as _search_listings_impl  # noqa: F401 — you
 # CallToolRequest" and the output you actually care about scrolls away.
 mcp = FastMCP("fitfindr", log_level="WARNING")
 
+# search listing wrappper
+# the real logic still lives in tools.py. this is the public facing mcp
+@mcp.tool()
+def search_listings(
+    description: str,
+    size: str | None = None,
+    max_price: float | None = None,
+) -> list[dict]:
+    """
+    Search a fixed catalouge of second-hand clothing listings.
 
-# ── TODO: uncomment and fill this in ──────────────────────────────────────────
-#
-# @mcp.tool()
-# def search_listings(
-#     description: str,
-#     size: str | None = None,
-#     max_price: float | None = None,
-# ) -> list[dict]:
-#     """
-#     <-- YOUR DESCRIPTION GOES HERE.
-#
-#         One or two sentences. What does this tool do, what does it need, and
-#         what does it give back when it finds nothing? Written for a reader
-#         who cannot see the code.
-#     """
-#     return _search_listings_impl(description, size, max_price)
-#
-# ──────────────────────────────────────────────────────────────────────────────
-#
+    Description is free text and is matched as keywords against each listing's
+    title, description, category, brand, style tags and colors. Size is
+    optional and matched as a whole size token; max_price is optional and 
+    inclusive, in dollars.
+
+    Returns a list of listing dicts, best keyword match first and cheaper first
+    among equal matches. Returns an empty list when nothing matches.
+    """
+    # search listing alias
+    # the leading underscores is a just a local alias to avoid a self-reference:
+    # the wrapper fiction is called search_listings. 
+    return _search_listings_impl(description, size, max_price)
+
+
 # Two notes on the block above.
 #
 # The registered name is the *function* name — so the block above registers
