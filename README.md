@@ -364,11 +364,11 @@ Here are a few options, depending on the vibe you’re going for:
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1. matching query completes | 4/5 |  PASS | PASS  |PASS   | PASS  | PASS  |PASS 5/5  |
-| 2. impossible query stops early | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  |PASS 5/5  |
-| 3. selected item is one outfit step receivess | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  | PASS 5/5 |
-| 4. fit card caption is concise | 3/5 | PASS  | FAIL  | PASS  | PASS  | PASS  | PASS 4/5 |
-| 5. empty wardrobe still gets outfit and card | 4/5 | PASS  | PASS  | PASS  | PASS  | PASS  | PASS S5/5 |
+| 1. matching query completes | 4/5 |  PASS | PASS  |PASS   | PASS  | PASS  | MET  (5/5)  |
+| 2. impossible query stops early | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  | MET  (5/5)  |
+| 3. selected item is one outfit step receivess | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  | MET  (5/5) |
+| 4. fit card caption is concise | 3/5 | PASS  | FAIL  | PASS  | PASS  | PASS  | MET (4/5) |
+| 5. empty wardrobe still gets outfit and card | 4/5 | PASS  | PASS  | PASS  | PASS  | PASS  | MET (5/5) |
 
 
 **Real output from one try**
@@ -576,15 +576,31 @@ Here are a few options, depending on the vibe you want for your post:
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Matching query completes | 4/5 | MET (5/5)  | 3 steps completed: 1. garment selected, 2. outfits suggested, 3. caption written
+| 2 | impossible query stops early | 5/5 | MET (5/5) | Stopped early in results output trace.
+| 3 | selected item is one outfit step receives | 5/5 | MET (5/5)  | selected outfit is same one used in outfit ideas generated.
+| 4 | fit card caption is concise, <= 500 characters | 3/5 | MET (4/5)  | The terminal printout of each fit card states how many characters the caption is. For example this caption fails because it's too long: `try 2: completed — fit card 691 chars`. This model output is likely affected the model temperature environment setting.
+| 5 | empty wardrobe still gets outfit & card |4/5  | MET (5/5) | Outfit and fit card is generated.
+
 
 **Diagnoses**
+All of the criterion passed. The one time that the model missed a target was when a caption that was too many characters was generated for Criterion 4. The actual caption wasn't really a caption. For some reason, it also included outfit suggestions in the caption text style formatting. 
 
+```
+Here are a few options, depending on your vibe:
 
+**Option 1 (Playful & Trendy)**
+> Fluttering back to the 2000s 🦋✨ Styled one Y2K baby tee three ways—from baggy denim streetwear to edgy grunge layers. Which look is your favorite? 1, 2, or 3? 👇💿 #Y2KFashion #StyleInspo #BabyTee
+
+**Option 2 (Short & Punchy)**
+> 1 tee, 3 ways. 🦋 Showing you how to style the ultimate Y2K butterfly baby tee with pieces you already own. Hit or miss? Let me know below! 👇✨ #OutfitInspo #Y2KStyle #Streetwear
+
+**Option 3 (Cozy & Relatable)**
+> Bringing butterfly prints and baggy jeans back into daily rotation 🦋👖 Which of these three fits are you wearing today? #GetReadyWithMe #Y2KAesthetic #WardrobeEssentials
+```
+This is happening at the model generation stage. Changing the model temperature environment variable can affect the variability of captions between runs.  
+
+No criterion were missed. The criterion in general may be too low because the majority of them focused on state criterion. The criterion could be improved for future runs by including assesments of the caption or outfit quality. Adding a criterion on whether the price selection was respected in the model outputs would set the criterion higher.
 
 ---
 
