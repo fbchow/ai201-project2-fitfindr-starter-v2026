@@ -680,12 +680,25 @@ python app.py ask 'pink polo' --empty-wardrobe
 
 ```
 
-**On the MCP move:** <!-- what changed in your code, and whether anything
-behaved differently afterwards. If the rewire didn't work, say exactly where it
-broke — the error text and the last thing that worked. That earns the point in
-full. -->
+**On the MCP move:** 
 
+Previously the `search_listings()` tool only existed in my own program, living in `tools.py`.
 
+Moving the tool to MCP will make the tool interoperatable with other agents or tools in the future.
+In `run_agent()`, swap the direct call:
+```
+    results = search_listings(description, size, max_price)
+```
+for the MCP one:
+```
+    from mcp_client import call_tool
+    results = call_tool("search_listings", {
+        "description": description,
+        "size": size,
+        "max_price": max_price,
+    })
+```
+The behavior is the same as before and nothing broke.
 
 ---
 
@@ -697,20 +710,31 @@ full. -->
      `python run_eval.py --label after` -->
 
 **What I changed:**
+Rewrite one prompt. Tighten caption prompt in `tools.py` for `create_fit_card`:
+The previous caption promt says:
+```
+description_prompt = f"Write a short caption for social media using this outfit listing: \n {new_item}."
+```
+Our new prompt:
+```
+description_prompt = f"Write a short caption under 500 characters for social media using this outfit listing.: \n {new_item}."
+```
 
 **Which failure it was meant to fix:**
+Criterion 4 - Captions should be concise under 500 characters.
 
 ### Run Log — After
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. matching query completes | 4/5 |  PASS | PASS  |PASS   | PASS  | PASS  | MET  (5/5)  |
+| 2. impossible query stops early | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  | MET  (5/5)  |
+| 3. selected item is one outfit step receivess | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  | MET  (5/5) |
+| 4. fit card caption is concise | 3/5 | PASS  | FAIL  | PASS  | PASS  | PASS  | MET (4/5) |
+| 5. empty wardrobe still gets outfit and card | 4/5 | PASS  | PASS  | PASS  | PASS  | PASS  | MET (5/5) |
 
 **Did it help, and how do I know:**
+It didn't help because the fit card is still too long in the same trial. I guess changing the prompt was not the right place to change it or not rewritten well.
 
 <!-- If it made things worse, say that. Honestly reported, that earns full
      credit and is more interesting than one that worked. -->
@@ -724,7 +748,7 @@ full. -->
 <!-- For each criterion still missed: what you'd do, and why you stopped where
      you did. "I ran out of time" is fine if it's true. Pretending nothing is
      left is not. -->
-
+There is a discrpency between the documented contract and your implementation in sync. The MCP tool docstring tells other agents that description is matched against title, description, category, brand, style tags, and colors — but the implementation only scores against the description field. In the future, I'd make sure there is a match between the document and implementation.
 
 
 <!-- ═════════════════════════════════════════════════════════════════════

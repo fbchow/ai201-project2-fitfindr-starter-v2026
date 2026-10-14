@@ -199,7 +199,7 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     """
     # guard against an empty or whitespace only outfit
     if not outfit or outfit == "" or outfit == " ":
-        description_prompt = f"Write a short caption for social media using this outfit listing: \n {new_item}."
+        description_prompt = f"Write a short caption under 500 characters for social media using this outfit listing: \n {new_item}."
         message = f"Outfit suggestions is missing. Here's a description about the new item instead: \n\n"
         description = generate(description_prompt)
         results = message + description
