@@ -78,7 +78,7 @@ def search_listings(
     Search a fixed catalouge of second-hand clothing listings.
 
     Description is free text and is matched as keywords against each listing's
-    title, description, category, brand, style tags and colors. Size is
+    title, description, category, brand, style tags, and colors. Size is
     optional and matched as a whole size token; max_price is optional and 
     inclusive, in dollars.
 

@@ -431,8 +431,87 @@ that produced it:
 
 **Empty search**
 
+``` bash
+python app.py ask 'ballroom gown under $5'
 ```
 
+``` markdown
+ Nothing matched 'ballroom gown' under $5. Try raising your budget, dropping the size, or using a broader description.
+```
+
+**Empty wardrobe**
+
+```bash
+python app.py ask 'loveangelmusiz' --trace
+```
+
+```markdown
+[1] search_listings
+      in:  3 items: loveangelmusiz…
+      out: [] (empty)
+      →    Nothing matched the description.
+
+  Nothing matched 'loveangelmusiz'. Try raising your budget, dropping the size, or using a broader description.
+```
+
+```bash
+python app.py ask 'linen pants' --empty-wardrobe
+```
+```markdown
+(running with an empty wardrobe)
+
+  Found:    Vintage Linen Blazer — Cream — $38.0 on thredUp
+
+  Outfit:   Here is some general styling advice for your **Vintage Linen Blazer (Cream)**:
+
+### **1. Style Vibe & Aesthetics**
+*   **Old Money / Coastal Grandmother:** Pair with white or beige wide-leg trousers, a slip dress, or loafers for an effortless, high-end resort look.
+*   **Cottagecore / Romantic:** Throw it over a floral midi dress or a tiered linen dress with flat leather sandals or Mary Janes.
+*   **Minimalist / French Chic:** Keep it simple with straight-leg blue jeans, a fitted white or black tank top, and minimalist gold jewelry.
+
+### **2. Outfit Formulas by Season**
+
+*   **Spring / Summer (Warm Weather):**
+    *   *Casual:* High-waisted denim shorts, a plain white t-shirt, and leather slides.
+    *   *Elevated Casual:* Linen trousers (monochromatic cream/beige look) with a silk camisole and strappy sandals.
+    *   *Dressy:* Layered over a slip dress with kitten heels and a straw bag.
+
+*   **Early Fall (Transition Weather):**
+    *   *Layered:* Wear it over a fine-knit turtleneck with straight-leg jeans and ankle boots.
+    *   *Tailored:* Pair with dark plaid trousers, a tucked-in button-down, and loafers.
+
+### **3. Color Pairing**
+*   **Neutrals (Best for a cohesive look):** White, beige, tan, olive green, chocolate brown, and navy blue.
+*   **Monochromatic:** Pair with stark white, cream, or oatmeal pieces for an expensive-looking tonal outfit.
+*   **Pops of Color:** Because the cream is neutral, you can easily pair it with sage green, butter yellow, lavender, or classic red accessories.
+
+### **4. Accessorizing Tips**
+*   **Jewelry:** Gold jewelry (hoops, layered necklaces, or chunky rings) warms up the cream tone of the linen.
+*   **Bags:** A straw basket bag, leather tote, or a canvas crossbody bag enhances the relaxed texture of the blazer.
+*   **Footwear:** Leather slides, loafers, ballet flats, or canvas sneakers all work well depending on how dressed up you want to be.
+
+### **Pro-Tip for Linen:** 
+Embrace the natural wrinkles! Linen looks best when it has a slightly lived-in, effortless drape. Push up or cuff the sleeves for an instantly more relaxed, stylish silhouette.
+
+  Fit card: Channeling that effortless Old Money energy today. 🕊️✨ 
+
+Nothing says timeless chic quite like a vintage cream linen blazer—fully leaning into the lived-in wrinkles, gold hoops, and tonalneutrals. 
+
+#CoastalGrandmother #FrenchChic #CapsuleWardrobe #LinenSeason #StyleInspo
+
+2 model calls this session, 691 prompt + 596 output tokens 
+```
+
+**Model Unavailable** 
+```bash
+python app.py ask 'pink polo' --empty-wardobe
+```
+
+```markdown
+(running with an empty wardrobe)
+1 model calls this session
+
+ModelUnavailable: The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com.
 ```
 
 **On the MCP move:** <!-- what changed in your code, and whether anything

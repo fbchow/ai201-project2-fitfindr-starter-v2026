@@ -113,8 +113,9 @@ def run_agent(query: str, wardrobe: dict) -> dict:
 
     while True:
         count += 1
-        # trace.check_iterations(count)
+        trace.check_iterations(count)
 
+      
         # Parse with regex: size and max price, the rest is the description.
         size_match = re.search(r"\bsize\s+(\w+)", query, re.I)
         price_match = re.search(r"(?:under|below|<)\s*\$?(\d+(?:\.\d+)?)", query, re.I)
@@ -134,13 +135,14 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         }
 
         # count += 1
-        # trace.check_iterations(count)
+  
         # session["search_results"] = search_listings(**session["parsed"])
         session["search_results"] = call_tool("search_listings", {
         "description": description,
         "size": size,
         "max_price": max_price,
     })
+
 
         # The branch: nothing found, so stop before suggest_outfit.
         if not session["search_results"]:
@@ -152,22 +154,33 @@ def run_agent(query: str, wardrobe: dict) -> dict:
                 + ". Try raising your budget, dropping the size, "
                 "or using a broader description."
             )
+
+            trace.step("search_listings", 
+                       inputs=[description, size, max_price], 
+                       returned=session["search_results"],
+                       note="Nothing matched the description.")
+            
             return session
-        # count += 1
-        # trace.check_iterations(count)
+
+
         session["selected_item"] = session["search_results"][0]
 
-        # count += 1
-        # trace.check_iterations(count)
+
         session["outfit_suggestion"] = suggest_outfit(
             session["selected_item"], session["wardrobe"]
         )
 
-        # count += 1
-        # trace.check_iterations(count)
+        trace.step("suggest_outfit", inputs=[session["selected_item"], session["wardrobe"]],
+                   returned=session["outfit_suggestion"])
+
+
         session["fit_card"] = create_fit_card(
             session["outfit_suggestion"], session["selected_item"]
         )
+                
+        trace.step("suggest_outfit", 
+                   inputs=[session["outfit_suggestion"], session["selected_item"]],
+                   returned=session["fitcard"])
         return session
 
 
