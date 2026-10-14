@@ -425,21 +425,22 @@ that produced it:
 
 **Happy path**
 
+```bash
+ python app.py ask 'vintage graphic tee under $30' --trace
 ```
-
+```markdown
+[1] search_listings
+      in:  3 items: vintage graphic tee…
+      out: 7 items: Vintage Graphic Hoodie — Faded Black, Mesh Long-Sleeve Top — Black, Y2K Baby Tee — Butterfly Print … +4 more
+[2] suggest_outfit
+      in:  2 items: Vintage Graphic Hoodie — Faded Black, ?
+      out: Here are two outfit combinations you can build using your new **Vintage Graphic Hoodie** and pieces from your …
+[3] fit_card
+      in:  2 items: Here are two outfit combinations you can build using your ne…
+      out: Here are a few options, depending on your vibe:  **Option 1 (Edgy & Streetwear)** > One hoodie, two totally di…
 ```
 
 **Empty search**
-
-``` bash
-python app.py ask 'ballroom gown under $5'
-```
-
-``` markdown
- Nothing matched 'ballroom gown' under $5. Try raising your budget, dropping the size, or using a broader description.
-```
-
-**Empty wardrobe**
 
 ```bash
 python app.py ask 'loveangelmusiz' --trace
@@ -454,64 +455,36 @@ python app.py ask 'loveangelmusiz' --trace
   Nothing matched 'loveangelmusiz'. Try raising your budget, dropping the size, or using a broader description.
 ```
 
+**Empty wardrobe**
 ```bash
-python app.py ask 'linen pants' --empty-wardrobe
+python app.py ask 'pink polo' --empty-wardrobe
 ```
+
 ```markdown
-(running with an empty wardrobe)
-
-  Found:    Vintage Linen Blazer — Cream — $38.0 on thredUp
-
-  Outfit:   Here is some general styling advice for your **Vintage Linen Blazer (Cream)**:
-
-### **1. Style Vibe & Aesthetics**
-*   **Old Money / Coastal Grandmother:** Pair with white or beige wide-leg trousers, a slip dress, or loafers for an effortless, high-end resort look.
-*   **Cottagecore / Romantic:** Throw it over a floral midi dress or a tiered linen dress with flat leather sandals or Mary Janes.
-*   **Minimalist / French Chic:** Keep it simple with straight-leg blue jeans, a fitted white or black tank top, and minimalist gold jewelry.
-
-### **2. Outfit Formulas by Season**
-
-*   **Spring / Summer (Warm Weather):**
-    *   *Casual:* High-waisted denim shorts, a plain white t-shirt, and leather slides.
-    *   *Elevated Casual:* Linen trousers (monochromatic cream/beige look) with a silk camisole and strappy sandals.
-    *   *Dressy:* Layered over a slip dress with kitten heels and a straw bag.
-
-*   **Early Fall (Transition Weather):**
-    *   *Layered:* Wear it over a fine-knit turtleneck with straight-leg jeans and ankle boots.
-    *   *Tailored:* Pair with dark plaid trousers, a tucked-in button-down, and loafers.
-
-### **3. Color Pairing**
-*   **Neutrals (Best for a cohesive look):** White, beige, tan, olive green, chocolate brown, and navy blue.
-*   **Monochromatic:** Pair with stark white, cream, or oatmeal pieces for an expensive-looking tonal outfit.
-*   **Pops of Color:** Because the cream is neutral, you can easily pair it with sage green, butter yellow, lavender, or classic red accessories.
-
-### **4. Accessorizing Tips**
-*   **Jewelry:** Gold jewelry (hoops, layered necklaces, or chunky rings) warms up the cream tone of the linen.
-*   **Bags:** A straw basket bag, leather tote, or a canvas crossbody bag enhances the relaxed texture of the blazer.
-*   **Footwear:** Leather slides, loafers, ballet flats, or canvas sneakers all work well depending on how dressed up you want to be.
-
-### **Pro-Tip for Linen:** 
-Embrace the natural wrinkles! Linen looks best when it has a slightly lived-in, effortless drape. Push up or cuff the sleeves for an instantly more relaxed, stylish silhouette.
-
-  Fit card: Channeling that effortless Old Money energy today. 🕊️✨ 
-
-Nothing says timeless chic quite like a vintage cream linen blazer—fully leaning into the lived-in wrinkles, gold hoops, and tonalneutrals. 
-
-#CoastalGrandmother #FrenchChic #CapsuleWardrobe #LinenSeason #StyleInspo
-
-2 model calls this session, 691 prompt + 596 output tokens 
+[1] search_listings
+      in:  3 items: pink polo…
+      out: 1 items: Vintage Polo Shirt — Forest Green
+[2] suggest_outfit
+      in:  2 items: Vintage Polo Shirt — Forest Green, ?
+      out: Here is some general styling advice for your **Vintage Ralph Lauren Forest Green Polo Shirt**:  ### **Vibe & A…
+[3] fit_card
+      in:  2 items: Here is some general styling advice for your **Vintage Ralph…
+      out: Here are a few options for the caption, depending on the vibe you want to go for:  **Option 1: Effortless & Pr…
 ```
 
 **Model Unavailable** 
 ```bash
-python app.py ask 'pink polo' --empty-wardobe
+ python app.py ask 'baby tee under $30' --trace
 ```
 
 ```markdown
-(running with an empty wardrobe)
-1 model calls this session
+[1] search_listings
+      in:  3 items: baby tee…
+      out: 4 items: Y2K Baby Tee — Butterfly Print, Graphic Tee — 2003 Tour Bootleg Style, Mesh Long-Sleeve Top — Black … +1 more
+[2] model_unavailable
+      in:  1 items: Y2K Baby Tee — Butterfly Print
+      →    The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com.
 
-ModelUnavailable: The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com.
 ```
 
 **On the MCP move:** <!-- what changed in your code, and whether anything

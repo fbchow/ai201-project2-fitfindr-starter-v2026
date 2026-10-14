@@ -106,7 +106,7 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         returned=...)` — see trace.py. Your README needs the output.
 
       • A handler for ModelUnavailable, so a bad key produces a message rather
-        than a stack trace. The import is already at the top of this file.
+        than a stack trace. (Done: see the try/except around the model calls.)
     """
     session = new_session(query, wardrobe)
     count = 0
@@ -143,6 +143,9 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         "max_price": max_price,
     })
 
+        trace.step("search_listings", 
+                   inputs=[description, size, max_price], 
+                   returned=session["search_results"])
 
         # The branch: nothing found, so stop before suggest_outfit.
         if not session["search_results"]:
@@ -166,21 +169,27 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         session["selected_item"] = session["search_results"][0]
 
 
-        session["outfit_suggestion"] = suggest_outfit(
-            session["selected_item"], session["wardrobe"]
-        )
+        try:
+            session["outfit_suggestion"] = suggest_outfit(
+                session["selected_item"], session["wardrobe"]
+            )
 
-        trace.step("suggest_outfit", inputs=[session["selected_item"], session["wardrobe"]],
-                   returned=session["outfit_suggestion"])
+            trace.step("suggest_outfit", inputs=[session["selected_item"], session["wardrobe"]],
+                       returned=session["outfit_suggestion"])
 
 
-        session["fit_card"] = create_fit_card(
-            session["outfit_suggestion"], session["selected_item"]
-        )
-                
-        trace.step("suggest_outfit", 
-                   inputs=[session["outfit_suggestion"], session["selected_item"]],
-                   returned=session["fitcard"])
+            session["fit_card"] = create_fit_card(
+                session["outfit_suggestion"], session["selected_item"]
+            )
+
+            trace.step("fit_card",
+                       inputs=[session["outfit_suggestion"], session["selected_item"]],
+                       returned=session["fit_card"])
+        except ModelUnavailable as exc:
+            session["error"] = f"The model couldn't be reached. {exc}"
+            session["fit_card"] = None
+            trace.step("model_unavailable", inputs=[session["selected_item"]],
+                       returned=None, note=str(exc))
         return session
 
 
