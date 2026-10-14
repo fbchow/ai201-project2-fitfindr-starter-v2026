@@ -33,8 +33,22 @@ SCENARIOS = [
         "name": "empty wardrobe",
         "query": "denim jacket under $50",
         "wardrobe": "empty",
-        "criterion": None,
+        "criterion": 3,
     },
+        {
+        # fit card caption is 500 char or less. Criterion 4.
+        "name": "fit card caption is concise",
+        "query": "baby tee under $20",
+        "wardrobe": "example",
+        "criterion": 4,
+    },
+        {
+        # empty wardrobe still gets an outfit and card. Criterion 5.
+        "name": "empty wardrobe still gets outfit and card",
+        "query": "linen shirt under $100",
+        "wardrobe": "empty",
+        "criterion": 5,
+    }
     # TODO: add what your criteria 3, 4 and 5 need.
     #
     # Set "criterion" to the number in criteria.md that the scenario tests.

@@ -364,18 +364,195 @@ Here are a few options, depending on the vibe you’re going for:
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. matching query completes | 4/5 |  PASS | PASS  |PASS   | PASS  | PASS  |PASS 5/5  |
+| 2. impossible query stops early | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  |PASS 5/5  |
+| 3. selected item is one outfit step receivess | 5/5 | PASS  | PASS  | PASS  | PASS  | PASS  | PASS 5/5 |
+| 4. fit card caption is concise | 3/5 | PASS  | FAIL  | PASS  | PASS  | PASS  | PASS 4/5 |
+| 5. empty wardrobe still gets outfit and card | 4/5 | PASS  | PASS  | PASS  | PASS  | PASS  | PASS S5/5 |
 
-**Real output from one try**, pasted as text, naming the file and function
-that produced it:
+
+**Real output from one try**
+Running this call:
+```bash
+python run_eval.py --label before
+```
+produced the file `results/run-2026-10-13_2153_before.md`
+
+**Criterion 1**
+Outfit suggestion:
+```
+Here are three outfit combinations featuring your new **Vintage Graphic Hoodie (lst_015)** paired with items from your wardrobe, leaning into its grunge and streetwear aesthetic:
+
+### Outfit 1: The Ultimate Grunge Streetwear Look
+* **Top:** Vintage Graphic Hoodie (`lst_015`)
+* **Bottoms:** Baggy straight-leg jeans, dark wash (`w_001`)
+* **Shoes:** Black combat boots (`w_008`)
+* **Accessories:** Black crossbody bag (`w_010`)
+* **Why it works:** Pairing an oversized hoodie with baggy dark denim hits that effortless 90s skater/grunge silhouette. Finish it off with lace-up combat boots to lean into the distressed, worn-in vibe of the faded black fabric.
+
+### Outfit 2: Casual Off-Duty Fit
+* **Top:** Vintage Graphic Hoodie (`lst_015`)
+* **Bottoms:** Wide-leg khaki trousers (`w_002`)
+* **Shoes:** Chunky white sneakers (`w_007`)
+* **Accessories:** Brown leather belt (`w_009`)
+* **Why it works:** High-low styling at its best. The earthy tan tones of the wide-leg trousers tone down the dark grunge energy of the hoodie, creating a balanced, skater-meets-minimalist outfit. The chunky white sneakers tie the streetwear aesthetic together.
+
+### Outfit 3: Monochrome Layered Edge
+* **Top:** Vintage Graphic Hoodie (`lst_015`)
+* **Outerwear:** Vintage black denim jacket (`w_006`) layered over top
+* **Bottoms:** Baggy straight-leg jeans, dark wash (`w_001`)
+* **Shoes:** Chunky white sneakers (`w_007`)
+* **Why it works:** Since the hoodie is a relaxed fit, layering your slightly cropped black denim jacket over it adds great texture, contrast, and structure. It plays with proportions (baggy bottoms + layered top) while keeping strictly to a cool black-and-charcoal color palette.
+```
+Fit card:
 
 ```
+Here are a few options, depending on the vibe you want:
+
+**Option 1 (Short & Edgy - Great for TikTok/Reels)**
+90s grunge is back and better than ever. 🖤 Styling the new Vintage Graphic Hoodie three ways—from heavy-duty combat boots to effortless off-duty streetwear. Which fit is your favorite? 🛹🔥 #Streetwear #GrungeStyle #OutfitInspo #Styling 
+
+**Option 2 (Casual & Relatable)**
+One hoodie, endless possibilities. 🔄 Taking our Vintage Graphic Hoodie from gritty skate fits to high-low minimalism. Tell me your go-to combo: 1, 2, or 3? 👇✨ #OOTD #StreetwearFashion #HoodieSeason 
+
+**Option 3 (Minimalist & Aesthetic)**
+Mastering the art of oversized proportions and textures. 🖤 Khaki tailoring meets distressed denim. How are you wearing your graphic hoodie this season? #WardrobeEssentials #StreetwearDaily #MinimalistStreetwear
+```
+**Criterion 2**
+
+```markdown
+[1] search_listings
+      in:  3 items: designer ballgown…
+      out: [] (empty)
+[2] search_listings
+      in:  3 items: designer ballgown…
+      out: [] (empty)
+      →    Nothing matched the description.
+```
+**Criterion 3**
+Outfit suggestion:
 
 ```
+Here is some general styling advice for your **Wrangler Light Wash Cropped Denim Jacket (`lst_007`)**:
+
+### 1. Play with Proportions (Emphasize the Crop)
+Because this jacket is cropped and features structured shoulders, it’s all about creating flattering silhouettes by contrasting lengths:
+* **High-Waisted Bottoms:** Pair it with high-waisted mom jeans, wide-leg trousers, or a high-waisted midi skirt. This accentuates the waist and makes your legs look longer.
+* **Maxi & Midi Dresses:** Throw it over a slip dress or a floral midi dress. The rugged, structured denim creates a great textural contrast against feminine, flowy dresses.
+
+### 2. Embrace the "Blank Canvas" (Customization & Layering)
+Since it’s free of patches and pins, you can keep it minimal or use it as a base:
+* **Layering:** It’s ideal for transitional weather. Layer it over a chunky turtleneck in the fall or a cropped tank top in the spring. 
+* **Accessories:** Because it’s a light wash, it pairs wonderfully with bold belts, chunky silver jewelry, or a vibrant crossbody bag to add pops of color. 
+
+### 3. Lean Into the Vibe (Streetwear & Vintage)
+* **Casual Streetwear:** Pair with graphic tees, baggy cargo pants, and retro sneakers (like Nike Dunks or Adidas Sambas) to lean into its streetwear roots.
+* **Double Denim (Canadian Tuxedo):** You *can* wear denim on denim, just ensure there is contrast. Pair this light wash jacket with darker wash jeans (indigo or black) to avoid looking too matchy-matchy.
+
+### 4. Color Palette Pairings
+Light blue is extremely versatile, but it looks especially fresh with:
+* **Neutrals:** White, cream, gray, and black for a clean, effortless look.
+* **Earth Tones:** Olive green, tan, and brown play nicely with the vintage Wrangler aesthetic.
+* **Pops of Color:** Pastel yellow, cherry red, or baby pink for a playful, 90s-inspired outfit.
+```
+
+Fit card:
+
+```
+✨ Mastering proportions with the ultimate light-wash crop. 🤌🏼 Throwing on the Wrangler denim jacket (`lst_007`) over flowy fits and high-waisted staples—because transitional weather calls for effortless layers. 
+
+How are you styling yours? Drop your favorite combo below! 👇🏼💙
+
+#WranglerStyle #DenimJacket #OOTD #StreetwearVibes #CapsuleWardrobe #DenimOnDenim
+```
+
+**Criterion 4**
+
+```
+try 1: completed — fit card 398 chars
+Fits card:
+
+🦋✨ One baby tee, endless possibilities. 
+
+Obsessed with how versatile the new Butterfly Print Y2K Baby Tee is! Whether you’re going for model-off-duty streetwear, an edgy grunge mix, or cozy layered transitions, we’ve got your outfit formula sorted. 
+
+Which look is your vibe? 1, 2, or 3? Let us know in the comments! 👇💬
+
+#Y2KFashion #BabyTee #OutfitInspo #StreetwearStyle #Y2KAesthetic #GetTheLook
+```
+
+**Criterion 5**
+
+Outfit suggestion:
+
+```
+Here is some general styling advice for your **Vintage Linen Blazer (Cream)**:
+
+### **Vibe & Aesthetic**
+With its relaxed fit, unstructured shoulders, and lightweight linen fabric, this blazer leans heavily into **effortless, breezy, and versatile** dressing. It bridges the gap between structured tailoring and casual comfort, making it a great transitional piece for spring, summer, and early fall.
+
+---
+
+### **Outfit Formulas**
+
+#### **1. Casual & Breezy (Everyday / Weekend)**
+*   **The Look:** Effortless coastal or cottagecore aesthetic.
+*   **Top:** A simple white cotton tank top, ribbed t-shirt, or a striped French sailor tee.
+*   **Bottoms:** High-waisted medium-wash denim jeans (straight-leg or wide-leg) or relaxed linen trousers.
+*   **Footwear:** Leather slides, canvas sneakers (like Veja or Converse), or brown leather sandals.
+*   **Accessories:** A straw tote bag, delicate gold layered necklaces, and sunglasses.
+
+#### **2. Monochromatic & Minimalist (Chic / Smart-Casual)**
+*   **The Look:** Clean, high-end, and expensive-looking.
+*   **Top:** A tonal cream, beige, or white silk camisole or fine-knit tee.
+*   **Bottoms:** Tailored cream or beige trousers (for a modern suit look) or cream linen shorts.
+*   **Footwear:** Pointed-toe mules, strappy kitten heels, or minimalist leather loafers.
+*   **Accessories:** A structured leather handbag and a minimalist belt.
+
+#### **3. Romantic & Feminine (Cottagecore / Brunch)**
+*   **The Look:** Soft, textural, and charming.
+*   **Dress/Skirt:** Layered over a floral midi slip dress, a white cotton broderie anglaise dress, or a flowing tiered linen skirt.
+*   **Footwear:** Ballet flats, vintage leather loafers, or espadrilles.
+*   **Accessories:** A woven basket bag and a ribbon in the hair.
+
+#### **4. Elevated Evening (Dinner / Summer Nights)**
+*   **The Look:** Sophisticated yet relaxed (great for warm-weather evenings).
+*   **Top:** A sleek black or rich jewel-toned (emerald, navy) silk camisole.
+*   **Bottoms:** Black wide-leg silk pants or dark denim.
+*   **Footwear:** Sleek black heels or strappy sandals.
+*   **Accessories:** Statement gold earrings and a clutch.
+
+---
+
+### **Pro-Tips for Styling Linen**
+*   **Embrace the Wrinkles:** Linen naturally creases; that’s part of its relaxed, vintage charm. Don't stress about keeping it perfectly crisp.
+*   **Play with Textures:** Pair the smoothness of the linen with contrasting textures like denim, raw silk, leather, or woven straw.
+*   **Layering:** Because it has an unstructured shoulder and relaxed fit, it layers easily over lightweight sweaters or tees without looking bulky.
+```
+
+Fit card:
+
+```
+Here are a few options, depending on the vibe you want for your post:
+
+**Option 1: Effortless & Chic (Great for Instagram/Pinterest)**
+> Coastal grandmother chic, but make it everyday. 🕊️✨ Embracing the linen wrinkles and leaning into that effortless, breezy spring layering. 
+> 
+> *Outfit formula:* Cream vintage linen blazer + a classic striped tee + wide-leg denim + favorite leather slides. ☕️🥐
+> 
+> #LinenBlazer #SpringStyle #EffortlessChic #CapsuleWardrobe #MinimalistStyle #OOTD
+
+**Option 2: Short & Punchy (Great for TikTok/Reels)**
+> One blazer, endless ways to style. 🤍 From weekend brunch runs to elevated summer nights—the vintage cream linen blazer is the ultimate warm-weather MVP. How are you wearing yours? 
+> 
+> #StylingTips #NeutralStyle #SummerFashion #OutfitInspo
+
+**Option 3: Cozy & Romantic**
+> Soft textures, coffee in hand, and my new favorite throw-on-and-go piece. There’s just something about a vintage linen blazer that instantly makes an outfit look expensive yet entirely effortless. 🧺✨
+> 
+> #CottagecoreStyle #SpringOutfit #LinenLook #WardrobeStaples
+```
+
 
 ---
 
